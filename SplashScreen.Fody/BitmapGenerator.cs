@@ -40,11 +40,11 @@ namespace SplashScreen.Fody
         }
 
         [NotNull]
-        internal static byte[] Generate([NotNull] string addinDirectory, [NotNull] string assemblyFilePath, [NotNull] string controlTypeName, [NotNull] IList<string> referenceCopyLocalPaths)
+        internal static byte[] Generate([NotNull] string addInDirectory, [NotNull] string assemblyFilePath, [NotNull] string controlTypeName, [NotNull] IList<string> referenceCopyLocalPaths)
         {
             const string friendlyName = "Temporary domain for SplashScreen.Fody";
 
-            var appDomain = AppDomain.CreateDomain(friendlyName, null, addinDirectory, string.Empty, false);
+            var appDomain = AppDomain.CreateDomain(friendlyName, null, addInDirectory, string.Empty, false);
 
             try
             {

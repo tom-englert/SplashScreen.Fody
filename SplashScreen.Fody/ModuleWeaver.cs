@@ -2,13 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.IO;
     using System.Linq;
 
     using FodyTools;
-
-    using global::Fody;
 
     using JetBrains.Annotations;
 
@@ -18,11 +14,24 @@
 
     public class ModuleWeaver : AbstractModuleWeaver
     {
-        const string splashResourceName = "splash_a7675be0ade04430a1bd47ee14b34343.png";
+        private const string SplashScreenAttributeName = "SplashScreen.SplashScreenAttribute";
+        private const string MinimumVisibilityDurationPropertyName = "MinimumVisibilityDuration";
+        private const string FadeoutDurationPropertyName = "FadeoutDuration";
+        private const string SplashScreenAdapterTypeName = "SplashScreenAdapter";
+
+        private const string SplashResourceName = "splash_a7675be0ade04430a1bd47ee14b34343.png";
 
         public override void Execute()
         {
             // System.Diagnostics.Debugger.Launch();
+
+            var entryPoint = ModuleDefinition.EntryPoint;
+
+            if (entryPoint == null)
+            {
+                LogError("No entry point found in target module.");
+                return;
+            }
 
             TypeDefinition splashScreenControl;
 
@@ -50,7 +59,7 @@
 
             var splashScreenControlBamlResourceName = splashScreenControl.Name.ToLowerInvariant() + ".baml";
 
-            ResourceHelper.AddResource(ModuleDefinition, splashResourceName, bitmapData, splashScreenControlBamlResourceName);
+            ResourceHelper.UpdateResources(ModuleDefinition, SplashResourceName, bitmapData, splashScreenControlBamlResourceName);
 
             ModuleDefinition.Types.Remove(splashScreenControl);
 
@@ -58,12 +67,12 @@
 
             var attribute = GetSplashScreenAttribute(splashScreenControl);
 
-            var minimumVisibilityDuration = attribute.GetPropertyValue("MinimumVisibilityDuration", 4.0);
-            var fadeoutDuration = attribute.GetPropertyValue("FadeoutDuration", 1.0);
+            var minimumVisibilityDuration = attribute.GetPropertyValue(MinimumVisibilityDurationPropertyName, 4.0);
+            var fadeoutDuration = attribute.GetPropertyValue(FadeoutDurationPropertyName, 1.0);
 
             var referencedModule = attribute.AttributeType.Resolve().Module;
 
-            var adapterType = referencedModule.Types.Single(type => type.Name == "SplashScreenAdapter");
+            var adapterType = referencedModule.Types.Single(type => type.Name == SplashScreenAdapterTypeName);
 
             adapterType = importer.Import(adapterType);
 
@@ -71,16 +80,8 @@
 
             var adapterTypeConstructor = adapterType.GetConstructors().Single(ctor => ctor.Parameters.Count == 3);
 
-            var entryPoint = ModuleDefinition.EntryPoint;
-
-            if (entryPoint == null)
-            {
-                LogError("No entry point found in target module.");
-                return;
-            }
-
             entryPoint.Body.Instructions.InsertRange(0,
-                Instruction.Create(OpCodes.Ldstr, splashResourceName),
+                Instruction.Create(OpCodes.Ldstr, SplashResourceName),
                 Instruction.Create(OpCodes.Ldc_R8, minimumVisibilityDuration),
                 Instruction.Create(OpCodes.Ldc_R8, fadeoutDuration),
                 Instruction.Create(OpCodes.Newobj, ModuleDefinition.ImportReference(adapterTypeConstructor)),
@@ -91,14 +92,16 @@
         [NotNull]
         public override IEnumerable<string> GetAssembliesForScanning() => Enumerable.Empty<string>();
 
+        public override bool ShouldCleanReference => true;
+
         private bool HasSplashScreenAttribute(TypeDefinition type)
         {
             return null != GetSplashScreenAttribute(type);
         }
 
-        private static CustomAttribute GetSplashScreenAttribute(TypeDefinition type)
+        private static CustomAttribute GetSplashScreenAttribute(ICustomAttributeProvider type)
         {
-            return type.GetAttribute("SplashScreen.SplashScreenAttribute");
+            return type.GetAttribute(SplashScreenAttributeName);
         }
     }
 }
