@@ -12,7 +12,7 @@ namespace SplashScreen.Fody
 
     internal static class ResourceHelper
     {
-        public static void AddResource([NotNull] ModuleDefinition module, [NotNull] string resourceName, [NotNull] byte[] resourceData)
+        public static void AddResource([NotNull] ModuleDefinition module, [NotNull] string resourceName, [NotNull] byte[] resourceData, [NotNull] params string[] resourcesToRemove)
         {
             var moduleResources = module.Resources;
 
@@ -23,7 +23,7 @@ namespace SplashScreen.Fody
             if (originalResource == null)
                 throw new InvalidOperationException($"The assembly '{module.FileName}' does not seem to be a valid WPF executable, it does not contain WPF resources.");
 
-            var newResourceData = AddResource(originalResource.GetResourceStream(), resourceName, resourceData);
+            var newResourceData = AddResource(originalResource.GetResourceStream(), resourceName, resourceData, resourcesToRemove);
             var newResource = new EmbeddedResource(originalResource.Name, originalResource.Attributes, newResourceData);
 
             moduleResources.Remove(originalResource);
@@ -31,7 +31,7 @@ namespace SplashScreen.Fody
         }
 
         [NotNull]
-        private static byte[] AddResource([NotNull] Stream originalResource, [NotNull] string resourceName, [NotNull] byte[] resourceData)
+        private static byte[] AddResource([NotNull] Stream originalResource, [NotNull] string resourceName, [NotNull] byte[] resourceData, [NotNull] string[] resourcesToRemove)
         {
             using (var targetStream = new MemoryStream())
             {
@@ -48,6 +48,11 @@ namespace SplashScreen.Fody
                             if (resourceName.Equals(key, StringComparison.OrdinalIgnoreCase))
                             {
                                 throw new InvalidOperationException($"Target assembly already contains a resource named '{resourceName}'");
+                            }
+
+                            if (resourcesToRemove.Contains(key))
+                            {
+                                continue;
                             }
 
                             writer.AddResource(key, (Stream)item.Value);

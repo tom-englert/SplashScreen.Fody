@@ -1,6 +1,7 @@
 ﻿namespace SplashScreen
 {
     using System;
+    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using System.Windows;
@@ -19,14 +20,14 @@
         [NotNull]
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
 
-        private readonly TimeSpan _minimumVisibilityDuration;
-        private readonly TimeSpan _fadeoutDuration;
+        private readonly double _minimumVisibilityDuration;
+        private readonly double _fadeoutDuration;
         private readonly DateTime _startTime = DateTime.Now;
 
         private static bool _splashScreenCloseRequested;
         private SplashScreen _physicalInstance;
 
-        private SplashScreenAdapter(string splashBitmapResourceName, TimeSpan minimumVisibilityDuration, TimeSpan fadeoutDuration)
+        internal SplashScreenAdapter(string splashBitmapResourceName, double minimumVisibilityDuration, double fadeoutDuration)
         {
             _minimumVisibilityDuration = minimumVisibilityDuration;
             _fadeoutDuration = fadeoutDuration;
@@ -65,7 +66,7 @@
                 if (Application.Current?.MainWindow?.IsLoaded != true)
                     return;
 
-                if ((DateTime.Now - _startTime) <= _minimumVisibilityDuration)
+                if ((DateTime.Now - _startTime).TotalSeconds <= _minimumVisibilityDuration)
                     return;
             }
 
@@ -73,7 +74,7 @@
 
             _timer.Stop();
 
-            _physicalInstance?.Close(_fadeoutDuration);
+            _physicalInstance?.Close(TimeSpan.FromSeconds(_fadeoutDuration));
             _physicalInstance = null;
         }
 

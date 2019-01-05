@@ -7,7 +7,7 @@
     /// <summary>
     /// Interaction logic for SplashScreen.xaml
     /// </summary>
-    [SplashScreen]
+    [SplashScreen(MinimumVisibilityDuration = double.MaxValue)]
     public partial class MySplashScreen
     {
         public MySplashScreen()
