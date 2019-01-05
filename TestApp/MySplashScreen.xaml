@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="TestApp.MySplashScreen"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             Foreground="{StaticResource {x:Static SystemColors.ControlTextBrushKey}}"
+             UseLayoutRounding="True" SnapsToDevicePixels="True"
+             TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType"
+             MaxWidth="600" FontSize="14">
+  <UserControl.Background>
+    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Color="Aqua" Offset="0" />
+      <GradientStop Color="DarkSalmon" Offset="1" />
+    </LinearGradientBrush>
+  </UserControl.Background>
+  <DockPanel Margin="45">
+    <TextBlock Text="YOUR&#10;LOGO" FontSize="48" DockPanel.Dock="Right"/>
+    <Decorator Width="40" DockPanel.Dock="Right"/>
+
+    <StackPanel>
+      <TextBlock Text="{Binding FileVersionInfo.FileDescription}" FontSize="18" FontWeight="Bold"/>
+      <Decorator Height="40" />
+      <TextBlock Text="{Binding FileVersionInfo.LegalTrademarks}" TextWrapping="Wrap" />
+      <Decorator Height="40" />
+      <TextBlock Text="{Binding FileVersionInfo.LegalCopyright}" TextWrapping="Wrap" />
+      <Decorator Height="40" />
+      <TextBlock DockPanel.Dock="Right">
+        <Run Text="Version" />
+        <Run Text="{Binding FileVersionInfo.FileVersion, Mode=OneWay}" />
+      </TextBlock>
+      <TextBlock Text="{Binding FileVersionInfo.LegalCopyright}" TextWrapping="Wrap" />
+    </StackPanel>
+  </DockPanel>
+</UserControl>

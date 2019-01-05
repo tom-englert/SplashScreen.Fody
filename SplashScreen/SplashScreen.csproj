@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="FodyPackaging.props" />
+
+  <PropertyGroup>
+    <TargetFrameworks>net40-client</TargetFrameworks>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Common.snk</AssemblyOriginatorKeyFile>
+    <SkipPackagingDefaultFiles>true</SkipPackagingDefaultFiles>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="4.0.0-beta.1" PrivateAssets="None" />
+  </ItemGroup>
+
+  <Import Project="FodyPackaging.targets" />
+
+</Project>

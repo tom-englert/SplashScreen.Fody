@@ -1,7 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net46</TargetFrameworks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FodyTools\FodyTools\AbstractModuleWeaver.cs" Link="AbstractModuleWeaver.cs" />
+    <Compile Include="..\FodyTools\FodyTools\AttributeExtensionMethods.cs" Link="AttributeExtensionMethods.cs" />
+    <Compile Include="..\FodyTools\FodyTools\CollectionExtensionMethods.cs" Link="CollectionExtensionMethods.cs" />
+    <Compile Include="..\FodyTools\FodyTools\TypeExtensionMethods.cs" Link="TypeExtensionMethods.cs" />
+    <Compile Include="..\FodyTools\FodyTools\TypeSystemExtensionMethods.cs" Link="TypeSystemExtensionMethods.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FodyHelpers" Version="4.0.0-beta.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
 
 </Project>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <PropertyGroup>
+    <Copyright>Copyright © tom-englert.de 2019. Distributed under the MIT License.</Copyright>
+    <Product>SplashScreen.Fody</Product>
+    <Version>0.9</Version>
+    <Description>TODO.</Description>
+  </PropertyGroup>
+
+  <Import Project="Common.props" />
+
+</Project>
