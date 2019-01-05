@@ -1,6 +1,7 @@
 ﻿namespace TestApp
 {
     using System;
+    using System.Windows.Input;
 
     using SplashScreen;
 
@@ -12,7 +13,10 @@
         public MainWindow()
         {
             InitializeComponent();
+        }
 
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
             SplashScreenAdapter.CloseSplashScreen(TimeSpan.FromSeconds(5));
         }
     }

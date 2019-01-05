@@ -1,5 +1,6 @@
 ﻿namespace SplashScreen.Fody
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
     using System.IO;
@@ -23,16 +24,33 @@
         {
             // System.Diagnostics.Debugger.Launch();
 
-            var splashScreenControl = ModuleDefinition.Types.SingleOrDefault(HasSplashScreenAttribute);
+            TypeDefinition splashScreenControl;
 
-            if (splashScreenControl == null)
+            try
             {
-                throw new WeavingException("No class with the [SplashScreen] attribute found.");
+                splashScreenControl = ModuleDefinition.Types.Single(HasSplashScreenAttribute);
+            }
+            catch (Exception ex)
+            {
+                LogError("No single class with the [SplashScreen] attribute found: " + ex.Message);
+                return;
             }
 
-            var bitmapData = BitmapGenerator.Generate(AddinDirectoryPath, AssemblyFilePath, splashScreenControl.FullName, ReferenceCopyLocalPaths);
+            byte[] bitmapData;
 
-            ResourceHelper.AddResource(ModuleDefinition, splashResourceName, bitmapData, (splashScreenControl.Name + ".baml").ToLowerInvariant());
+            try
+            {
+                bitmapData = BitmapGenerator.Generate(AddinDirectoryPath, AssemblyFilePath, splashScreenControl.FullName, ReferenceCopyLocalPaths);
+            }
+            catch (Exception ex)
+            {
+                LogError(ex.Message);
+                return;
+            }
+
+            var splashScreenControlBamlResourceName = splashScreenControl.Name.ToLowerInvariant() + ".baml";
+
+            ResourceHelper.AddResource(ModuleDefinition, splashResourceName, bitmapData, splashScreenControlBamlResourceName);
 
             ModuleDefinition.Types.Remove(splashScreenControl);
 
@@ -57,7 +75,8 @@
 
             if (entryPoint == null)
             {
-                throw new WeavingException("No entry point found in target module.");
+                LogError("No entry point found in target module.");
+                return;
             }
 
             entryPoint.Body.Instructions.InsertRange(0,

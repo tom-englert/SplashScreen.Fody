@@ -16,6 +16,8 @@ namespace SplashScreen.Fody
 
     public class BitmapGenerator : MemoryStream
     {
+        private Exception _exception;
+
         public BitmapGenerator([NotNull] string assemblyFilePath, [NotNull] string controlTypeName, [NotNull] IEnumerable<string> referenceCopyLocalPaths)
         {
             var assemblyNames = referenceCopyLocalPaths
@@ -30,10 +32,15 @@ namespace SplashScreen.Fody
             thread.SetApartmentState(ApartmentState.STA);
             thread.Start();
             thread.Join();
+
+            if (_exception != null)
+            {
+                throw _exception;
+            }
         }
 
         [NotNull]
-        public static byte[] Generate([NotNull] string addinDirectory, [NotNull] string assemblyFilePath, [NotNull] string controlTypeName, [NotNull] IList<string> referenceCopyLocalPaths)
+        internal static byte[] Generate([NotNull] string addinDirectory, [NotNull] string assemblyFilePath, [NotNull] string controlTypeName, [NotNull] IList<string> referenceCopyLocalPaths)
         {
             const string friendlyName = "Temporary domain for SplashScreen.Fody";
 
@@ -53,30 +60,40 @@ namespace SplashScreen.Fody
                 return ((MemoryStream)target).GetBuffer();
 
             }
+            catch (Exception ex)
+            {
+                throw ex.GetBaseException();
+            }
             finally
             {
                 AppDomain.Unload(appDomain);
             }
         }
 
-
         private void GenerateInStaThread([NotNull] string assemblyFilePath, [NotNull] string controlTypeName)
         {
-            var targetAssembly = Assembly.LoadFile(assemblyFilePath);
-            var controlType = targetAssembly.GetTypes().FirstOrDefault(type => string.Equals(type.FullName, controlTypeName, StringComparison.OrdinalIgnoreCase));
+            try
+            {
+                var targetAssembly = Assembly.LoadFile(assemblyFilePath);
+                var controlType = targetAssembly.GetTypes().FirstOrDefault(type => string.Equals(type.FullName, controlTypeName, StringComparison.OrdinalIgnoreCase));
 
-            if (controlType == null)
-                throw new InvalidOperationException($"The project does not contain a type named '{controlTypeName}'. Add a user control named {controlTypeName}.xaml as a template for your splash screen.");
+                if (controlType == null)
+                    throw new InvalidOperationException($"The project does not contain a type named '{controlTypeName}'. Add a user control named {controlTypeName}.xaml as a template for your splash screen.");
 
-            var dispatcher = Dispatcher.CurrentDispatcher;
+                var dispatcher = Dispatcher.CurrentDispatcher;
 
-            UIElement control = null;
+                UIElement control = null;
 
-            dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() => control = CreateControl(controlType)));
-            dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => GenerateBitmap(control)));
-            dispatcher.BeginInvokeShutdown(DispatcherPriority.ContextIdle);
+                dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() => control = CreateControl(controlType)));
+                dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => GenerateBitmap(control)));
+                dispatcher.BeginInvokeShutdown(DispatcherPriority.ContextIdle);
 
-            Dispatcher.Run();
+                Dispatcher.Run();
+            }
+            catch (Exception ex)
+            {
+                _exception = ex;
+            }
         }
 
         private void GenerateBitmap([NotNull] UIElement control)

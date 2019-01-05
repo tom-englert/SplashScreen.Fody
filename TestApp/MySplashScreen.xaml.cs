@@ -4,10 +4,16 @@
     using System.Diagnostics;
     using System.Reflection;
 
+
+    public class Dummy
+    {
+
+    }
+
     /// <summary>
     /// Interaction logic for SplashScreen.xaml
     /// </summary>
-    [SplashScreen(MinimumVisibilityDuration = double.MaxValue)]
+    [SplashScreen(MinimumVisibilityDuration = double.MaxValue, FadeoutDuration = 0.5)]
     public partial class MySplashScreen
     {
         public MySplashScreen()
