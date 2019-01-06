@@ -1,6 +1,6 @@
 ### This is an add-in for [Fody](https://github.com/Fody/Fody/) 
 
-[![Build status](https://ci.appveyor.com/api/projects/status/TODO)](https://ci.appveyor.com/project/tom-englert/splashscreen-fody) 
+[![Build status](https://ci.appveyor.com/api/projects/status/i2jm1594u56we6rq?svg=true)](https://ci.appveyor.com/project/tom-englert/spashscreen-fody)
 [![NuGet Status](http://img.shields.io/nuget/v/SplashScreen.Fody.svg?style=flat-square)](https://www.nuget.org/packages/SplashScreen.Fody)
 
 ![Icon](Icon.png)
