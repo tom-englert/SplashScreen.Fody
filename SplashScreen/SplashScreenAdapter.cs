@@ -1,7 +1,7 @@
-﻿namespace SplashScreen
+﻿// ReSharper disable IdentifierTypo
+namespace SplashScreen
 {
     using System;
-    using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.Runtime.InteropServices;
     using System.Windows;
@@ -9,6 +9,10 @@
 
     using JetBrains.Annotations;
 
+    /// <summary>
+    /// Adapter class to control the <see cref="System.Windows.SplashScreen"/>.
+    /// </summary>
+    [UsedImplicitly]
     public class SplashScreenAdapter
     {
         const uint SWP_NOMOVE = 0x0002;
@@ -27,7 +31,7 @@
         private static bool _splashScreenCloseRequested;
         private SplashScreen _physicalInstance;
 
-        internal SplashScreenAdapter(string splashBitmapResourceName, double minimumVisibilityDuration, double fadeoutDuration)
+        internal SplashScreenAdapter([NotNull] string splashBitmapResourceName, double minimumVisibilityDuration, double fadeoutDuration)
         {
             _minimumVisibilityDuration = minimumVisibilityDuration;
             _fadeoutDuration = fadeoutDuration;
@@ -49,11 +53,17 @@
             _adapterInstance = this;
         }
 
+        /// <summary>
+        /// Closes the splash screen immediately. Use this before showing error messages, else the message window might disappear with the fading out splash screen.
+        /// </summary>
         public static void CloseSplashScreen()
         {
             _adapterInstance?.Close(TimeSpan.Zero);
         }
 
+        /// <summary>
+        /// Closes the splash screen using the specified fadeout duration. Use this before showing error messages, else the message window might disappear with the fading out splash screen.
+        /// </summary>
         public static void CloseSplashScreen(TimeSpan fadeoutDuration)
         {
             _adapterInstance?.Close(fadeoutDuration);
@@ -96,6 +106,7 @@
             private const uint WM_NCLBUTTONDOWN = 0x00A1;
             private const uint WM_LBUTTONDOWN = 0x0201;
 
+            [NotNull]
             private static readonly WinProc _windowProcDelegate = WindowProc;
 
             [SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]
