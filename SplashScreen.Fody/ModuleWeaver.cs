@@ -25,11 +25,16 @@
         {
             // System.Diagnostics.Debugger.Launch();
 
-            var entryPoint = ModuleDefinition.EntryPoint;
+            Execute(ModuleDefinition, this, AddinDirectoryPath, AssemblyFilePath, ReferenceCopyLocalPaths);
+        }
+
+        private static void Execute([NotNull] ModuleDefinition moduleDefinition, [NotNull] ILogger logger, [NotNull] string addInDirectoryPath, [NotNull] string assemblyFilePath, [NotNull] IList<string> referenceCopyLocalPaths)
+        {
+            var entryPoint = moduleDefinition.EntryPoint;
 
             if (entryPoint == null)
             {
-                LogError("No entry point found in target module.");
+                logger.LogError("No entry point found in target module.");
                 return;
             }
 
@@ -37,11 +42,11 @@
 
             try
             {
-                splashScreenControl = ModuleDefinition.Types.Single(HasSplashScreenAttribute);
+                splashScreenControl = moduleDefinition.Types.Single(HasSplashScreenAttribute);
             }
             catch (Exception ex)
             {
-                LogError("No single class with the [SplashScreen] attribute found: " + ex.Message);
+                logger.LogError("No single class with the [SplashScreen] attribute found: " + ex.Message);
                 return;
             }
 
@@ -49,21 +54,21 @@
 
             try
             {
-                bitmapData = BitmapGenerator.Generate(AddinDirectoryPath, AssemblyFilePath, splashScreenControl.FullName, ReferenceCopyLocalPaths);
+                bitmapData = BitmapGenerator.Generate(addInDirectoryPath, assemblyFilePath, splashScreenControl.FullName, referenceCopyLocalPaths);
             }
             catch (Exception ex)
             {
-                LogError(ex.Message);
+                logger.LogError(ex.Message);
                 return;
             }
 
             var splashScreenControlBamlResourceName = splashScreenControl.Name.ToLowerInvariant() + ".baml";
 
-            ResourceHelper.UpdateResources(ModuleDefinition, SplashResourceName, bitmapData, splashScreenControlBamlResourceName);
+            ResourceHelper.UpdateResources(moduleDefinition, SplashResourceName, bitmapData, splashScreenControlBamlResourceName);
 
-            ModuleDefinition.Types.Remove(splashScreenControl);
+            moduleDefinition.Types.Remove(splashScreenControl);
 
-            var importer = new CodeImporter(ModuleDefinition);
+            var importer = new CodeImporter(moduleDefinition);
 
             var attribute = GetSplashScreenAttribute(splashScreenControl);
 
@@ -84,9 +89,9 @@
                 Instruction.Create(OpCodes.Ldstr, SplashResourceName),
                 Instruction.Create(OpCodes.Ldc_R8, minimumVisibilityDuration),
                 Instruction.Create(OpCodes.Ldc_R8, fadeoutDuration),
-                Instruction.Create(OpCodes.Newobj, ModuleDefinition.ImportReference(adapterTypeConstructor)),
+                Instruction.Create(OpCodes.Newobj, moduleDefinition.ImportReference(adapterTypeConstructor)),
                 Instruction.Create(OpCodes.Pop)
-                );
+            );
         }
 
         [NotNull]
@@ -94,7 +99,7 @@
 
         public override bool ShouldCleanReference => true;
 
-        private bool HasSplashScreenAttribute(TypeDefinition type)
+        private static bool HasSplashScreenAttribute(TypeDefinition type)
         {
             return null != GetSplashScreenAttribute(type);
         }

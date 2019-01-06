@@ -29,7 +29,6 @@
         <Run Text="Version" />
         <Run Text="{Binding FileVersionInfo.FileVersion, Mode=OneWay}" />
       </TextBlock>
-      <TextBlock Text="{Binding FileVersionInfo.LegalCopyright}" TextWrapping="Wrap" />
     </StackPanel>
   </DockPanel>
 </UserControl>
