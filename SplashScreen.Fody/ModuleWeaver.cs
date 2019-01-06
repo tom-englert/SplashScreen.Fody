@@ -21,6 +21,12 @@
 
         private const string SplashResourceName = "splash_a7675be0ade04430a1bd47ee14b34343.png";
 
+        
+        public override bool ShouldCleanReference => true;
+
+        [NotNull]
+        public override IEnumerable<string> GetAssembliesForScanning() => Enumerable.Empty<string>();
+
         public override void Execute()
         {
             // System.Diagnostics.Debugger.Launch();
@@ -68,8 +74,6 @@
 
             moduleDefinition.Types.Remove(splashScreenControl);
 
-            var importer = new CodeImporter(moduleDefinition);
-
             var attribute = GetSplashScreenAttribute(splashScreenControl);
 
             var minimumVisibilityDuration = attribute.GetPropertyValue(MinimumVisibilityDurationPropertyName, 4.0);
@@ -78,6 +82,8 @@
             var referencedModule = attribute.AttributeType.Resolve().Module;
 
             var adapterType = referencedModule.Types.Single(type => type.Name == SplashScreenAdapterTypeName);
+
+            var importer = new CodeImporter(moduleDefinition);
 
             adapterType = importer.Import(adapterType);
 
@@ -93,11 +99,6 @@
                 Instruction.Create(OpCodes.Pop)
             );
         }
-
-        [NotNull]
-        public override IEnumerable<string> GetAssembliesForScanning() => Enumerable.Empty<string>();
-
-        public override bool ShouldCleanReference => true;
 
         private static bool HasSplashScreenAttribute(TypeDefinition type)
         {
