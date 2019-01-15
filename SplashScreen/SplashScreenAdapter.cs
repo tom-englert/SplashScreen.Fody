@@ -56,6 +56,7 @@ namespace SplashScreen
         /// <summary>
         /// Closes the splash screen immediately. Use this before showing error messages, else the message window might disappear with the fading out splash screen.
         /// </summary>
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static void CloseSplashScreen()
         {
             _adapterInstance?.Close(TimeSpan.Zero);
@@ -64,6 +65,7 @@ namespace SplashScreen
         /// <summary>
         /// Closes the splash screen using the specified fadeout duration. Use this before showing error messages, else the message window might disappear with the fading out splash screen.
         /// </summary>
+        [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static void CloseSplashScreen(TimeSpan fadeoutDuration)
         {
             _adapterInstance?.Close(fadeoutDuration);
@@ -169,6 +171,7 @@ namespace SplashScreen
             // This helper static method is required because the 32-bit version of user32.dll does not contain this API
             // (on any versions of Windows), so linking the method will fail at run-time. The bridge dispatches the request
             // to the correct function (GetWindowLong in 32-bit mode and GetWindowLongPtr in 64-bit mode)
+            [SuppressMessage("Microsoft.Interoperability", "CA1400:PInvokeEntryPointsShouldExist")]
             public static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr newValue)
             {
                 return IntPtr.Size == 8

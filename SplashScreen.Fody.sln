@@ -12,11 +12,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplashScreen.Fody", "SplashScreen.Fody\SplashScreen.Fody.csproj", "{A180747C-B983-478D-9E4A-E19BD6C46171}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplashScreen.Fody", "SplashScreen.Fody\SplashScreen.Fody.csproj", "{A180747C-B983-478D-9E4A-E19BD6C46171}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplashScreen", "SplashScreen\SplashScreen.csproj", "{1FC868CE-6366-4997-A302-9AF7542267B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplashScreen", "SplashScreen\SplashScreen.csproj", "{1FC868CE-6366-4997-A302-9AF7542267B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{9A7A040D-A692-4189-A333-0A394C3DDD8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{9A7A040D-A692-4189-A333-0A394C3DDD8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp2", "TestApp2\TestApp2.csproj", "{265074F0-71A5-4B51-B977-7C853D56F903}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{9A7A040D-A692-4189-A333-0A394C3DDD8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A7A040D-A692-4189-A333-0A394C3DDD8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A7A040D-A692-4189-A333-0A394C3DDD8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{265074F0-71A5-4B51-B977-7C853D56F903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{265074F0-71A5-4B51-B977-7C853D56F903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{265074F0-71A5-4B51-B977-7C853D56F903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{265074F0-71A5-4B51-B977-7C853D56F903}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

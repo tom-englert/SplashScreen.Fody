@@ -25,4 +25,8 @@
 
   <Import Project="FodyPackaging.targets" />
 
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);CODE_ANALYSIS</DefineConstants>
+  </PropertyGroup>
+
 </Project>
