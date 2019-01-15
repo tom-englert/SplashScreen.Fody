@@ -1,4 +1,6 @@
 ﻿// ReSharper disable IdentifierTypo
+// ReSharper disable ArrangeTypeMemberModifiers
+// ReSharper disable InconsistentNaming
 namespace SplashScreen
 {
     using System;
