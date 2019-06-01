@@ -9,6 +9,7 @@
     <Compile Include="..\FodyTools\FodyTools\AttributeExtensionMethods.cs" Link="AttributeExtensionMethods.cs" />
     <Compile Include="..\FodyTools\FodyTools\CodeImporter.cs" Link="CodeImporter.cs" />
     <Compile Include="..\FodyTools\FodyTools\CollectionExtensionMethods.cs" Link="CollectionExtensionMethods.cs" />
+    <Compile Include="..\FodyTools\FodyTools\MemberExtensionMethods.cs" Link="MemberExtensionMethods.cs" />
     <Compile Include="..\FodyTools\FodyTools\TypeExtensionMethods.cs" Link="TypeExtensionMethods.cs" />
     <Compile Include="..\FodyTools\FodyTools\TypeSystemExtensionMethods.cs" Link="TypeSystemExtensionMethods.cs" />
   </ItemGroup>
