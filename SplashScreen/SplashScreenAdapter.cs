@@ -17,9 +17,10 @@ namespace SplashScreen
     [UsedImplicitly]
     public class SplashScreenAdapter
     {
-        const uint SWP_NOMOVE = 0x0002;
-        const uint SWP_NOSIZE = 0x0001;
-        const int HWND_TOPMOST = -1;
+        private const uint SWP_NOMOVE = 0x0002;
+        private const uint SWP_NOSIZE = 0x0001;
+        private const int HWND_TOPMOST = -1;
+        private const int HWND_NOTOPMOST = -2;
 
         private static SplashScreenAdapter _adapterInstance;
 
@@ -109,6 +110,9 @@ namespace SplashScreen
             private const uint WM_ENABLE = 0x000A;
             private const uint WM_NCLBUTTONDOWN = 0x00A1;
             private const uint WM_LBUTTONDOWN = 0x0201;
+            private const uint WM_ACTIVATEAPP = 0x001C;
+            private const uint WM_ACTIVATE = 0x0006;
+
 
             [NotNull]
             private static readonly WinProc _windowProcDelegate = WindowProc;
@@ -160,8 +164,22 @@ namespace SplashScreen
                             NativeMethods.EnableWindow(hWnd, true);
                             return (IntPtr)1;
                         }
-
                         break;
+
+                    case WM_ACTIVATEAPP:
+                        if (wParam == IntPtr.Zero)
+                        {
+                            NativeMethods.SetWindowPos(hWnd, (IntPtr)HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+                        }
+                        break;
+
+                    case WM_ACTIVATE:
+                        if (wParam == IntPtr.Zero)
+                        {
+                            NativeMethods.SetWindowPos(hWnd, (IntPtr)HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+                        }
+                        break;
+
                 }
 
                 return NativeMethods.CallWindowProc(_oldWndProc, hWnd, uMsg, wParam, lParam);
