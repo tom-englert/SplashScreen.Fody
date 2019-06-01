@@ -20,12 +20,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fody" Version="4.0.1" PrivateAssets="None" />
+    <PackageReference Include="Fody" Version="4.2.1" PrivateAssets="None" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-19270-01" PrivateAssets="All" />
   </ItemGroup>
 
   <Import Project="FodyPackaging.targets" />
 
   <PropertyGroup>
+    <!-- define CODE_ANALYSIS to persist the "SupressMessage" attributes! -->
     <DefineConstants>$(DefineConstants);CODE_ANALYSIS</DefineConstants>
   </PropertyGroup>
 

@@ -7,6 +7,22 @@
     <Title Condition="'$(Title)' == ''">$(Product)</Title>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <GitHubOrganization>tom-englert</GitHubOrganization>
+    <PackageId>$(MSBuildProjectName).Fody</PackageId>
+    <LangVersion>latest</LangVersion>
+    <PackageOutputPath>$(SolutionDir)nugets</PackageOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageIconFile Include="$(SolutionDir)*icon*.png" />
+    <PackageLicenseFile Include="$(SolutionDir)*license*" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageIconFileName Condition="'$(PackageIconFileName)' == ''">@(PackageIconFile->'%(Filename)%(Extension)')</PackageIconFileName>
+    <PackageLicenseFileName Condition="'$(PackageLicenseFileName)' == ''">@(PackageLicenseFile->'%(Filename)%(Extension)')</PackageLicenseFileName>
+    <PackageProjectUrl>http://github.com/$(GitHubOrganization)/$(PackageId)</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/$(GitHubOrganization)/$(PackageId)/master/$(PackageIconFileName)</PackageIconUrl>
+    <PackageLicenseFile>$(PackageLicenseFileName)</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net40-client'">
@@ -28,16 +44,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2018.3.0" PrivateAssets="All" />
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.0.0-beta2-18618-05"  PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup>
     <WeaverFiles Include="$(SolutionDir)$(SolutionName)\bin\$(Configuration)\Net46\$(SolutionName).dll" />
   </ItemGroup>
 
   <ItemGroup>
     <TfmSpecificPackageFile Include="build\*.targets" PackagePath="build" />
   </ItemGroup>
+
+  <Target Name="LogTargetFramework" BeforeTargets="CoreCompile">
+    <Message Text="TargetFramework: $(TargetFramework): ID=$(TargetFrameworkIdentifier), Version=$(TargetFrameworkVersion), Profile=$(TargetFrameworkProfile)" />
+  </Target>
 
 </Project>
