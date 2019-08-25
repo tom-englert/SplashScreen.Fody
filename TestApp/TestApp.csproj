@@ -54,15 +54,19 @@
   
   <ItemGroup>
     <PackageReference Include="Fody">
-      <Version>4.2.1</Version>
+      <Version>6.0.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
+    <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\SplashScreen\SplashScreen.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WeaverFiles Include="$(SolutionDir)$(SolutionName)\bin\$(Configuration)\net472\$(SolutionName).dll" />
   </ItemGroup>
 
 </Project>
