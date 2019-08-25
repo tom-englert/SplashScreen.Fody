@@ -3,7 +3,7 @@
   <Import Project="FodyPackaging.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net40-client</TargetFrameworks>
+    <TargetFrameworks>net40-client;net45</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Common.snk</AssemblyOriginatorKeyFile>
     <SkipPackagingDefaultFiles>true</SkipPackagingDefaultFiles>
