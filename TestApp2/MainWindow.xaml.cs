@@ -1,10 +1,9 @@
-﻿namespace TestApp
+﻿using System;
+using System.Windows.Input;
+using SplashScreen;
+
+namespace TestApp2
 {
-    using System;
-    using System.Windows.Input;
-
-    using SplashScreen;
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

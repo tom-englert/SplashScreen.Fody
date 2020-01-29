@@ -1,10 +1,9 @@
-﻿namespace TestApp
+﻿using System.Diagnostics;
+using System.Reflection;
+using SplashScreen;
+
+namespace TestApp2
 {
-    using SplashScreen;
-    using System.Diagnostics;
-    using System.Reflection;
-
-
     public class Dummy
     {
 
