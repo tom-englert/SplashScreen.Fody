@@ -1,4 +1,8 @@
-﻿namespace TestApp
+﻿using System;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+namespace TestApp
 {
     using SplashScreen;
     using System.Diagnostics;

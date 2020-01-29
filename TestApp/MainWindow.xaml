@@ -6,6 +6,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" MouseDown="MainWindow_MouseDown">
     <Grid>
-        
+
     </Grid>
 </Window>

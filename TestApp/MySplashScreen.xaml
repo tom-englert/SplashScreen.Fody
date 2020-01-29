@@ -15,7 +15,7 @@
     </LinearGradientBrush>
   </UserControl.Background>
   <DockPanel Margin="45">
-    <TextBlock Text="YOUR&#10;LOGO" FontSize="48" DockPanel.Dock="Right"/>
+    <Image Source="Logo.png" Width="48" Height="48" DockPanel.Dock="Right" VerticalAlignment="Top" />
     <Decorator Width="40" DockPanel.Dock="Right"/>
 
     <StackPanel>
