@@ -1,20 +1,20 @@
 ﻿// ReSharper disable IdentifierTypo
 // ReSharper disable ArrangeTypeMemberModifiers
 // ReSharper disable InconsistentNaming
+// ReSharper disable AssignNullToNotNullAttribute
+// ReSharper disable PossibleNullReferenceException
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Threading;
+
 namespace SplashScreen
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.InteropServices;
-    using System.Windows;
-    using System.Windows.Threading;
-
-    using JetBrains.Annotations;
-
     /// <summary>
     /// Adapter class to control the <see cref="System.Windows.SplashScreen"/>.
     /// </summary>
-    [UsedImplicitly]
     public class SplashScreenAdapter
     {
         private const uint SWP_NOMOVE = 0x0002;
@@ -22,9 +22,8 @@ namespace SplashScreen
         private const int HWND_TOPMOST = -1;
         private const int HWND_NOTOPMOST = -2;
 
-        private static SplashScreenAdapter _adapterInstance;
+        private static SplashScreenAdapter? _adapterInstance;
 
-        [NotNull]
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
 
         private readonly double _minimumVisibilityDuration;
@@ -32,14 +31,14 @@ namespace SplashScreen
         private readonly DateTime _startTime = DateTime.Now;
 
         private static bool _splashScreenCloseRequested;
-        private SplashScreen _physicalInstance;
+        private System.Windows.SplashScreen? _physicalInstance;
 
-        internal SplashScreenAdapter([NotNull] string splashBitmapResourceName, double minimumVisibilityDuration, double fadeoutDuration)
+        internal SplashScreenAdapter(string splashBitmapResourceName, double minimumVisibilityDuration, double fadeoutDuration)
         {
             _minimumVisibilityDuration = minimumVisibilityDuration;
             _fadeoutDuration = fadeoutDuration;
 
-            _physicalInstance = new SplashScreen(splashBitmapResourceName);
+            _physicalInstance = new System.Windows.SplashScreen(splashBitmapResourceName);
             _physicalInstance.Show(false);
 
             var hWndSplash = NativeMethods.GetActiveWindow();
@@ -74,7 +73,7 @@ namespace SplashScreen
             _adapterInstance?.Close(fadeoutDuration);
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object? sender, EventArgs e)
         {
             if (!_splashScreenCloseRequested)
             {
@@ -114,7 +113,6 @@ namespace SplashScreen
             private const uint WM_ACTIVATE = 0x0006;
 
 
-            [NotNull]
             private static readonly WinProc _windowProcDelegate = WindowProc;
 
             [SuppressMessage("Microsoft.Reliability", "CA2006:UseSafeHandleToEncapsulateNativeResources")]

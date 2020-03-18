@@ -4,6 +4,7 @@
   <PropertyGroup>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
+    <TargetFrameworks>net472;netcoreapp3.0</TargetFrameworks>
     <TargetFrameworks>net472</TargetFrameworks>
   </PropertyGroup>
 
@@ -33,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <WeaverFiles Include="$(SolutionDir)$(SolutionName)\bin\$(Configuration)\net472\$(SolutionName).dll" />
+    <WeaverFiles Include="$(SolutionDir)$(SolutionName)\bin\$(Configuration)\$(TargetFramework)\$(SolutionName).dll" />
   </ItemGroup>
 
 </Project>
