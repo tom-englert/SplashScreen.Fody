@@ -1,14 +1,17 @@
 ﻿// ReSharper disable IdentifierTypo
 // ReSharper disable ArrangeTypeMemberModifiers
 // ReSharper disable InconsistentNaming
+// ReSharper disable AssignNullToNotNullAttribute
+// ReSharper disable PossibleNullReferenceException
+
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Threading;
+
 namespace SplashScreen
 {
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.InteropServices;
-    using System.Windows;
-    using System.Windows.Threading;
-
     /// <summary>
     /// Adapter class to control the <see cref="System.Windows.SplashScreen"/>.
     /// </summary>
@@ -28,14 +31,14 @@ namespace SplashScreen
         private readonly DateTime _startTime = DateTime.Now;
 
         private static bool _splashScreenCloseRequested;
-        private SplashScreen _physicalInstance;
+        private System.Windows.SplashScreen? _physicalInstance;
 
         internal SplashScreenAdapter(string splashBitmapResourceName, double minimumVisibilityDuration, double fadeoutDuration)
         {
             _minimumVisibilityDuration = minimumVisibilityDuration;
             _fadeoutDuration = fadeoutDuration;
 
-            _physicalInstance = new SplashScreen(splashBitmapResourceName);
+            _physicalInstance = new System.Windows.SplashScreen(splashBitmapResourceName);
             _physicalInstance.Show(false);
 
             var hWndSplash = NativeMethods.GetActiveWindow();
@@ -68,7 +71,7 @@ namespace SplashScreen
             _adapterInstance?.Close(fadeoutDuration);
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void Timer_Tick(object? sender, EventArgs e)
         {
             if (!_splashScreenCloseRequested)
             {
