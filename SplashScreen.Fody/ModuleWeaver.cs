@@ -1,15 +1,14 @@
-﻿namespace SplashScreen.Fody
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Versioning;
+using FodyTools;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
+
+namespace SplashScreen.Fody
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using FodyTools;
-
-    using Mono.Cecil;
-    using Mono.Cecil.Cil;
-    using Mono.Cecil.Rocks;
-
     public class ModuleWeaver : AbstractModuleWeaver
     {
         private const string SplashScreenAttributeName = "SplashScreen.SplashScreenAttribute";
@@ -19,7 +18,7 @@
 
         private const string SplashResourceName = "splash_a7675be0ade04430a1bd47ee14b34343.png";
 
-        
+
         public override bool ShouldCleanReference => true;
 
         public override IEnumerable<string> GetAssembliesForScanning() => Enumerable.Empty<string>();
@@ -57,7 +56,8 @@
 
             try
             {
-                bitmapData = BitmapGenerator.Generate(addInDirectoryPath, assemblyFilePath, splashScreenControl.FullName, referenceCopyLocalPaths);
+                var frameworkName = GetTargetFrameworkName(moduleDefinition);
+                bitmapData = BitmapGenerator.Generate(addInDirectoryPath, frameworkName.Identifier, assemblyFilePath, splashScreenControl.FullName, referenceCopyLocalPaths);
             }
             catch (Exception ex)
             {
@@ -106,5 +106,18 @@
         {
             return type.GetAttribute(SplashScreenAttributeName);
         }
+
+        [CanBeNull]
+        private static FrameworkName GetTargetFrameworkName([NotNull] ModuleDefinition moduleDefinition)
+        {
+            return moduleDefinition.Assembly
+                .CustomAttributes
+                .Where(attr => attr.AttributeType.FullName == typeof(TargetFrameworkAttribute).FullName)
+                .Select(attr => attr.ConstructorArguments.Select(arg => arg.Value as string).FirstOrDefault())
+                .Where(name => !string.IsNullOrEmpty(name))
+                .Select(name => new FrameworkName(name))
+                .FirstOrDefault();
+        }
+
     }
 }

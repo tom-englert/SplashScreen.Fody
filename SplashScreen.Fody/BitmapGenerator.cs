@@ -1,139 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using JetBrains.Annotations;
+
 namespace SplashScreen.Fody
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Threading;
-    using System.Windows;
-    using System.Windows.Media;
-    using System.Windows.Media.Imaging;
-    using System.Windows.Threading;
-
-    public class BitmapGenerator : MemoryStream
+    public class BitmapGenerator
     {
-        private Exception? _exception;
-
-        public BitmapGenerator(string assemblyFilePath, string controlTypeName, IEnumerable<string> referenceCopyLocalPaths)
+        [NotNull]
+        internal static byte[] Generate(string addInDirectoryPath, [NotNull] string frameworkIdentifier, [NotNull] string assemblyFilePath, [NotNull] string controlTypeName, [NotNull] IList<string> referenceCopyLocalPaths)
         {
-            var assemblyNames = referenceCopyLocalPaths
-                .Select(TryGetAssemblyName)
-                .Where(assembly => assembly != null)
-                .ToDictionary(item => item!.FullName);
-
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, e) => assemblyNames.TryGetValue(e.Name, out var assemblyName) ? Assembly.Load(assemblyName) : null;
-
-            var thread = new Thread(() => { GenerateInStaThread(assemblyFilePath, controlTypeName); }) { Name = "STA helper thread" };
-
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.Start();
-            thread.Join();
-
-            if (_exception != null)
-            {
-                throw _exception;
-            }
-        }
-
-        internal static byte[] Generate(string addInDirectory, string assemblyFilePath, string controlTypeName, IList<string> referenceCopyLocalPaths)
-        {
-            const string friendlyName = "Temporary domain for SplashScreen.Fody";
-
-            var appDomain = AppDomain.CreateDomain(friendlyName, null, addInDirectory, string.Empty, false);
-
             try
             {
-                var assemblyFullName = typeof(BitmapGenerator).Assembly.FullName;
-                var typeName = typeof(BitmapGenerator).FullName;
+                var root = addInDirectoryPath;
+                var generatorPath = Path.Combine(root, frameworkIdentifier, "SplashGenerator.exe");
+                var arguments = new[] {assemblyFilePath, controlTypeName}.Concat(referenceCopyLocalPaths);
 
-                const BindingFlags bindingFlags = BindingFlags.CreateInstance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+                var startInfo = new ProcessStartInfo(generatorPath)
+                {
+                    CreateNoWindow = true,
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    Arguments = string.Join(" ",arguments.Select(arg => "\"" + arg + "\""))
+                };
 
-                var arguments = new object[] { assemblyFilePath, controlTypeName, referenceCopyLocalPaths };
+                var process = Process.Start(startInfo);
+                var data = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
 
-                var target = appDomain.CreateInstanceAndUnwrap(assemblyFullName, typeName, true, bindingFlags, null, arguments, CultureInfo.CurrentCulture, null);
+                var binary = Convert.FromBase64String(data);
 
-                return ((MemoryStream)target).GetBuffer();
+                return binary;
 
             }
             catch (Exception ex)
             {
                 throw ex.GetBaseException();
             }
-            finally
-            {
-                AppDomain.Unload(appDomain);
-            }
         }
 
-        private void GenerateInStaThread(string assemblyFilePath, string controlTypeName)
-        {
-            try
-            {
-                var targetAssembly = Assembly.LoadFile(assemblyFilePath);
-                var controlType = targetAssembly.GetTypes().FirstOrDefault(type => string.Equals(type.FullName, controlTypeName, StringComparison.OrdinalIgnoreCase));
-
-                if (controlType == null)
-                    throw new InvalidOperationException($"The project does not contain a type named '{controlTypeName}'. Add a user control named {controlTypeName}.xaml as a template for your splash screen.");
-
-                var dispatcher = Dispatcher.CurrentDispatcher;
-
-                UIElement? control = null;
-
-                dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() => control = CreateControl(controlType)));
-                dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => GenerateBitmap(control)));
-                dispatcher.BeginInvokeShutdown(DispatcherPriority.ContextIdle);
-
-                Dispatcher.Run();
-            }
-            catch (Exception ex)
-            {
-                _exception = ex;
-            }
-        }
-
-        private void GenerateBitmap(UIElement? control)
-        {
-            if (control == null)
-                return;
-
-            control.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-            var desiredSize = control.DesiredSize;
-            control.Arrange(new Rect(0, 0, desiredSize.Width, desiredSize.Height));
-
-            var bitmap = new RenderTargetBitmap((int)desiredSize.Width, (int)desiredSize.Height, 96, 96, PixelFormats.Pbgra32);
-
-            bitmap.Render(control);
-
-            var encoder = new PngBitmapEncoder();
-
-            encoder.Frames.Add(BitmapFrame.Create(bitmap));
-            encoder.Save(this);
-        }
-
-        private static UIElement CreateControl(Type controlType)
-        {
-            try
-            {
-                return (UIElement)Activator.CreateInstance(controlType);
-            }
-            catch
-            {
-                throw new InvalidOperationException($"Type {controlType} is not a UIElement with a default constructor. You need to have a user control named {controlType.Name}.xaml as a template for your splash screen.");
-            }
-        }
-
-        private static AssemblyName? TryGetAssemblyName(string fileName)
-        {
-            try
-            {
-                return AssemblyName.GetAssemblyName(fileName);
-            }
-            catch
-            {
-                return null;
-            }
-        }
     }
 }

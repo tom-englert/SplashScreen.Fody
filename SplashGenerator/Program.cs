@@ -1,23 +1,22 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Linq;
 using System.Windows;
-using Newtonsoft.Json;
 
 namespace SplashGenerator
 {
-    static class Program
+    public static class Program
     {
         [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
             try
             {
-                var input = Console.ReadLine();
-                //MessageBox.Show(input);
+                // var input = Console.ReadLine();
+                // MessageBox.Show("Generator");
                 
-                var parameters = JsonConvert.DeserializeObject<GeneratorParameters>(input);
+                // var parameters = JsonConvert.DeserializeObject<GeneratorParameters>(input);
 
-                var stream = BitmapGenerator.Generate(parameters);
+                var stream = BitmapGenerator.Generate(args[0], args[1], args.Skip(2));
 
                 ///MessageBox.Show("1");
 

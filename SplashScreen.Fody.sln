@@ -13,16 +13,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplashScreen.Fody", "SplashScreen.Fody\SplashScreen.Fody.csproj", "{A180747C-B983-478D-9E4A-E19BD6C46171}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E1791E16-8F56-4288-9BEA-BF75FBD61E27} = {E1791E16-8F56-4288-9BEA-BF75FBD61E27}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplashScreen", "SplashScreen\SplashScreen.csproj", "{1FC868CE-6366-4997-A302-9AF7542267B8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E1791E16-8F56-4288-9BEA-BF75FBD61E27} = {E1791E16-8F56-4288-9BEA-BF75FBD61E27}
+		{A180747C-B983-478D-9E4A-E19BD6C46171} = {A180747C-B983-478D-9E4A-E19BD6C46171}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{9A7A040D-A692-4189-A333-0A394C3DDD8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp2", "TestApp2\TestApp2.csproj", "{265074F0-71A5-4B51-B977-7C853D56F903}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplashGenerator", "SplashGenerator\SplashGenerator.csproj", "{E1791E16-8F56-4288-9BEA-BF75FBD61E27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SplashGenerator", "SplashGenerator\SplashGenerator.csproj", "{E1791E16-8F56-4288-9BEA-BF75FBD61E27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{8A4FE58E-0B04-4287-9FFC-EA35E7B68DB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{8A4FE58E-0B04-4287-9FFC-EA35E7B68DB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

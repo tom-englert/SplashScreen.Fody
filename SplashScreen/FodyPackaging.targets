@@ -2,15 +2,18 @@
   <Target Name="IncludeFodyFiles">
     <ItemGroup>
       <NetClassicFilesToInclude Include="$(WeaverDirPath)\net4*\$(PackageId).dll" />
+      <NetFrameworkSplashGeneratorFilesToInclude Include="$(WeaverDirPath)\net4*\.NetFramework\*" />
+      <NetCoreSplashGeneratorFilesToInclude Include="$(WeaverDirPath)\net4*\.NetCoreApp\*" />
     </ItemGroup>
 
-    <Error Text="FodyPackaging: No NetClassic weavers found to include in package. Maybe the build order is wrong?" Condition="'@(NetClassicFilesToInclude)'==''" />
+    <Error Text="FodyPackaging: No NetClassic weavers found" Condition="'@(NetClassicFilesToInclude)'==''" />
+    <Error Text="FodyPackaging: No NetFramework generator files found" Condition="'@(NetFrameworkSplashGeneratorFilesToInclude)'==''" />
+    <Error Text="FodyPackaging: No NetCore generator files found" Condition="'@(NetCoreSplashGeneratorFilesToInclude)'==''" />
 
     <ItemGroup>
-      <NetClassicFilesToInclude Include="$(WeaverDirPath)\net4*\$(PackageId).xcf" />
-      <NetClassicFilesToInclude Include="$(WeaverDirPath)\net4*\$(PackageId).pdb" />
-
       <TfmSpecificPackageFile Include="@(NetClassicFilesToInclude)" PackagePath="netclassicweaver\%(Filename)%(Extension)" />
+      <TfmSpecificPackageFile Include="@(NetFrameworkSplashGeneratorFilesToInclude)" PackagePath="netclassicweaver\.NETFramework\%(Filename)%(Extension)" />
+      <TfmSpecificPackageFile Include="@(NetCoreSplashGeneratorFilesToInclude)" PackagePath="netclassicweaver\.NETCoreApp\%(Filename)%(Extension)" />
       <TfmSpecificPackageFile Include="$(WeaverPropsFile)" PackagePath="build\$(PackageId).props" />
     </ItemGroup>
   </Target>

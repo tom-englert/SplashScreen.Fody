@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Newtonsoft.Json;
+using System.Linq;
 using Xunit;
 
 namespace Tests
@@ -12,23 +12,22 @@ namespace Tests
         [Fact]
         public void Test1()
         {
-            var parameters = new SplashGenerator.GeneratorParameters
-            {
-                AssemblyFilePath = typeof(TestApp.App).Assembly.Location,
-                ControlTypeName = typeof(TestApp.MySplashScreen).FullName,
-                ReferenceCopyLocalPaths = new List<string>()
-            };
+            var assemblyFilePath = typeof(TestApp.App).Assembly.Location;
+            var controlTypeName = typeof(TestApp.MySplashScreen).FullName;
+            var referenceCopyLocalPaths = new List<string>();
+            var arguments = new[] {assemblyFilePath, controlTypeName}.Concat(referenceCopyLocalPaths);
 
-            var startInfo = new ProcessStartInfo(typeof(SplashGenerator.GeneratorParameters).Assembly.Location)
+            var startInfo = new ProcessStartInfo(typeof(SplashGenerator.Program).Assembly.Location)
             {
                 CreateNoWindow = true,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
+                Arguments = string.Join(" ",arguments.Select(arg => "\"" + arg + "\""))
+
             };
 
             var process = Process.Start(startInfo);
-            process.StandardInput.WriteLine(JsonConvert.SerializeObject(parameters, Formatting.None));
             var data = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
