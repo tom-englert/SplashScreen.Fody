@@ -6,8 +6,6 @@
 
     using FodyTools;
 
-    using JetBrains.Annotations;
-
     using Mono.Cecil;
     using Mono.Cecil.Cil;
     using Mono.Cecil.Rocks;
@@ -24,7 +22,6 @@
         
         public override bool ShouldCleanReference => true;
 
-        [NotNull]
         public override IEnumerable<string> GetAssembliesForScanning() => Enumerable.Empty<string>();
 
         public override void Execute()
@@ -34,7 +31,7 @@
             Execute(ModuleDefinition, this, AddinDirectoryPath, AssemblyFilePath, ReferenceCopyLocalPaths);
         }
 
-        private static void Execute([NotNull] ModuleDefinition moduleDefinition, [NotNull] ILogger logger, [NotNull] string addInDirectoryPath, [NotNull] string assemblyFilePath, [NotNull] IList<string> referenceCopyLocalPaths)
+        private static void Execute(ModuleDefinition moduleDefinition, ILogger logger, string addInDirectoryPath, string assemblyFilePath, IList<string> referenceCopyLocalPaths)
         {
             var entryPoint = moduleDefinition.EntryPoint;
 
@@ -74,7 +71,7 @@
 
             moduleDefinition.Types.Remove(splashScreenControl);
 
-            var attribute = GetSplashScreenAttribute(splashScreenControl);
+            var attribute = GetSplashScreenAttribute(splashScreenControl)!;
 
             var minimumVisibilityDuration = attribute.GetPropertyValue(MinimumVisibilityDurationPropertyName, 4.0);
             var fadeoutDuration = attribute.GetPropertyValue(FadeoutDurationPropertyName, 1.0);
@@ -105,7 +102,7 @@
             return null != GetSplashScreenAttribute(type);
         }
 
-        private static CustomAttribute GetSplashScreenAttribute(ICustomAttributeProvider type)
+        private static CustomAttribute? GetSplashScreenAttribute(ICustomAttributeProvider type)
         {
             return type.GetAttribute(SplashScreenAttributeName);
         }

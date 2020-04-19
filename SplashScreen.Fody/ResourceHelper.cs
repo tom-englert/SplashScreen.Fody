@@ -6,13 +6,11 @@ namespace SplashScreen.Fody
     using System.Linq;
     using System.Resources;
 
-    using JetBrains.Annotations;
-
     using Mono.Cecil;
 
     internal static class ResourceHelper
     {
-        public static void UpdateResources([NotNull] ModuleDefinition module, [NotNull] string resourceName, [NotNull] byte[] resourceData, [NotNull] params string[] resourcesToRemove)
+        public static void UpdateResources(ModuleDefinition module, string resourceName, byte[] resourceData, params string[] resourcesToRemove)
         {
             var moduleResources = module.Resources;
 
@@ -30,8 +28,7 @@ namespace SplashScreen.Fody
             moduleResources.Add(newResource);
         }
 
-        [NotNull]
-        private static byte[] UpdateResources([NotNull] Stream originalResource, [NotNull] string resourceName, [NotNull] byte[] resourceData, [NotNull] string[] resourcesToRemove)
+        private static byte[] UpdateResources(Stream originalResource, string resourceName, byte[] resourceData, string[] resourcesToRemove)
         {
             using (var targetStream = new MemoryStream())
             {

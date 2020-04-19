@@ -12,18 +12,16 @@ namespace SplashScreen.Fody
     using System.Windows.Media.Imaging;
     using System.Windows.Threading;
 
-    using JetBrains.Annotations;
-
     public class BitmapGenerator : MemoryStream
     {
-        private Exception _exception;
+        private Exception? _exception;
 
-        public BitmapGenerator([NotNull] string assemblyFilePath, [NotNull] string controlTypeName, [NotNull] IEnumerable<string> referenceCopyLocalPaths)
+        public BitmapGenerator(string assemblyFilePath, string controlTypeName, IEnumerable<string> referenceCopyLocalPaths)
         {
             var assemblyNames = referenceCopyLocalPaths
                 .Select(TryGetAssemblyName)
                 .Where(assembly => assembly != null)
-                .ToDictionary(item => item.FullName);
+                .ToDictionary(item => item!.FullName);
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e) => assemblyNames.TryGetValue(e.Name, out var assemblyName) ? Assembly.Load(assemblyName) : null;
 
@@ -39,8 +37,7 @@ namespace SplashScreen.Fody
             }
         }
 
-        [NotNull]
-        internal static byte[] Generate([NotNull] string addInDirectory, [NotNull] string assemblyFilePath, [NotNull] string controlTypeName, [NotNull] IList<string> referenceCopyLocalPaths)
+        internal static byte[] Generate(string addInDirectory, string assemblyFilePath, string controlTypeName, IList<string> referenceCopyLocalPaths)
         {
             const string friendlyName = "Temporary domain for SplashScreen.Fody";
 
@@ -70,7 +67,7 @@ namespace SplashScreen.Fody
             }
         }
 
-        private void GenerateInStaThread([NotNull] string assemblyFilePath, [NotNull] string controlTypeName)
+        private void GenerateInStaThread(string assemblyFilePath, string controlTypeName)
         {
             try
             {
@@ -82,7 +79,7 @@ namespace SplashScreen.Fody
 
                 var dispatcher = Dispatcher.CurrentDispatcher;
 
-                UIElement control = null;
+                UIElement? control = null;
 
                 dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() => control = CreateControl(controlType)));
                 dispatcher.BeginInvoke(DispatcherPriority.Background, (Action)(() => GenerateBitmap(control)));
@@ -96,8 +93,11 @@ namespace SplashScreen.Fody
             }
         }
 
-        private void GenerateBitmap([NotNull] UIElement control)
+        private void GenerateBitmap(UIElement? control)
         {
+            if (control == null)
+                return;
+
             control.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             var desiredSize = control.DesiredSize;
             control.Arrange(new Rect(0, 0, desiredSize.Width, desiredSize.Height));
@@ -112,8 +112,7 @@ namespace SplashScreen.Fody
             encoder.Save(this);
         }
 
-        [NotNull]
-        private static UIElement CreateControl([NotNull] Type controlType)
+        private static UIElement CreateControl(Type controlType)
         {
             try
             {
@@ -125,7 +124,7 @@ namespace SplashScreen.Fody
             }
         }
 
-        private static AssemblyName TryGetAssemblyName([NotNull] string fileName)
+        private static AssemblyName? TryGetAssemblyName(string fileName)
         {
             try
             {
