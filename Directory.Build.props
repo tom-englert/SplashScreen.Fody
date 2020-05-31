@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Copyright>Copyright © tom-englert.de 2020. Distributed under the MIT License.</Copyright>
     <Product>SplashScreen.Fody</Product>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
     <Description>Lets you design your WPF splash screen as a WPF Control instead of a static bitmap</Description>
   </PropertyGroup>
 
