@@ -7,7 +7,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Common.snk</AssemblyOriginatorKeyFile>
     <SkipPackagingDefaultFiles>true</SkipPackagingDefaultFiles>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

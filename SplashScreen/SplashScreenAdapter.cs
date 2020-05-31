@@ -19,7 +19,7 @@ namespace SplashScreen
         private const int HWND_TOPMOST = -1;
         private const int HWND_NOTOPMOST = -2;
 
-        private static SplashScreenAdapter? _adapterInstance;
+        private static SplashScreenAdapter _adapterInstance;
 
         private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
 
@@ -28,7 +28,7 @@ namespace SplashScreen
         private readonly DateTime _startTime = DateTime.Now;
 
         private static bool _splashScreenCloseRequested;
-        private SplashScreen? _physicalInstance;
+        private SplashScreen _physicalInstance;
 
         internal SplashScreenAdapter(string splashBitmapResourceName, double minimumVisibilityDuration, double fadeoutDuration)
         {
