@@ -4,12 +4,6 @@
     using System.Diagnostics;
     using System.Reflection;
 
-
-    public class Dummy
-    {
-
-    }
-
     /// <summary>
     /// Interaction logic for SplashScreen.xaml
     /// </summary>

@@ -12,15 +12,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fody" Version="6.1.1" PrivateAssets="None" />
+    <PackageReference Include="Fody" Version="6.2.4" PrivateAssets="None" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.0-beta-20204-02" PrivateAssets="All" />
   </ItemGroup>
 
   <Import Project="FodyPackaging.targets" />
-
-  <PropertyGroup>
-    <!-- define CODE_ANALYSIS to persist the "SupressMessage" attributes! -->
-    <DefineConstants>$(DefineConstants);CODE_ANALYSIS</DefineConstants>
-  </PropertyGroup>
 
 </Project>

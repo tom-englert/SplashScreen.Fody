@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Versioning;
+
 using FodyTools;
+
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
@@ -56,8 +58,9 @@ namespace SplashScreen.Fody
 
             try
             {
-                var frameworkName = GetTargetFrameworkName(moduleDefinition);
-                bitmapData = BitmapGenerator.Generate(addInDirectoryPath, frameworkName.Identifier, assemblyFilePath, splashScreenControl.FullName, referenceCopyLocalPaths);
+                var frameworkIdentifier = GetTargetFrameworkName(moduleDefinition)?.Identifier ?? ".NETFramework";
+
+                bitmapData = BitmapGenerator.Generate(logger, addInDirectoryPath, frameworkIdentifier, assemblyFilePath, splashScreenControl.FullName, referenceCopyLocalPaths);
             }
             catch (Exception ex)
             {
@@ -107,8 +110,7 @@ namespace SplashScreen.Fody
             return type.GetAttribute(SplashScreenAttributeName);
         }
 
-        [CanBeNull]
-        private static FrameworkName GetTargetFrameworkName([NotNull] ModuleDefinition moduleDefinition)
+        private static FrameworkName? GetTargetFrameworkName(ModuleDefinition moduleDefinition)
         {
             return moduleDefinition.Assembly
                 .CustomAttributes
@@ -118,6 +120,5 @@ namespace SplashScreen.Fody
                 .Select(name => new FrameworkName(name))
                 .FirstOrDefault();
         }
-
     }
 }

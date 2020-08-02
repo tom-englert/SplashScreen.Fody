@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFramework>$(WeaverTargetFramework)</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -18,8 +18,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FodyHelpers" Version="6.1.1" />
+    <PackageReference Include="FodyHelpers" Version="6.2.4" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.0-beta-20204-02" PrivateAssets="All" />
   </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="CopyFilesToOutputDirectory">
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f netcoreapp3.1 --no-build" />
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f netcoreapp3.1 -r win-x86" />
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f netcoreapp3.1 -r win-x64" />
+  </Target>
 
 </Project>

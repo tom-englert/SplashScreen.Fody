@@ -31,7 +31,7 @@ namespace SplashScreen
         private readonly DateTime _startTime = DateTime.Now;
 
         private static bool _splashScreenCloseRequested;
-        private System.Windows.SplashScreen? _physicalInstance;
+        private System.Windows.SplashScreen _physicalInstance;
 
         internal SplashScreenAdapter(string splashBitmapResourceName, double minimumVisibilityDuration, double fadeoutDuration)
         {
@@ -39,10 +39,9 @@ namespace SplashScreen
             _fadeoutDuration = fadeoutDuration;
 
             _physicalInstance = new System.Windows.SplashScreen(splashBitmapResourceName);
-            _physicalInstance.Show(false);
+            _physicalInstance.Show(false, true);
 
             var hWndSplash = NativeMethods.GetActiveWindow();
-            NativeMethods.SetWindowPos(hWndSplash, (IntPtr)HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
             NativeMethods.SetActiveWindow(IntPtr.Zero);
 
             Hook.HookWindow(hWndSplash);
@@ -71,7 +70,7 @@ namespace SplashScreen
             _adapterInstance?.Close(fadeoutDuration);
         }
 
-        private void Timer_Tick(object? sender, EventArgs e)
+        private void Timer_Tick(object sender, EventArgs e)
         {
             if (!_splashScreenCloseRequested)
             {

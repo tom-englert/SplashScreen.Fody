@@ -1,6 +1,7 @@
 ﻿namespace TestApp
 {
     using System;
+    using System.Reflection;
     using System.Windows.Input;
 
     using SplashScreen;
@@ -13,6 +14,7 @@
         public MainWindow()
         {
             InitializeComponent();
+            Content = Assembly.GetEntryAssembly()?.Location;
         }
 
         private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)

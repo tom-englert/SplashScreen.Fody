@@ -6,6 +6,8 @@
     <Product>SplashScreen.Fody</Product>
     <Version>1.5.0</Version>
     <Description>Lets you design your WPF splash screen as a WPF Control instead of a static bitmap</Description>
+    <WeaverTargetFramework>netstandard2.0</WeaverTargetFramework>
+    <WeaverNugetFolder>netstandardweaver</WeaverNugetFolder>
   </PropertyGroup>
 
   <Import Project="Common.props" />
