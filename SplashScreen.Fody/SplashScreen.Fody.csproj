@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="CopyFilesToOutputDirectory">
-    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f netcoreapp3.1 --no-build" />
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f netcoreapp3.1" />
     <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f netcoreapp3.1 -r win-x86" />
     <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f netcoreapp3.1 -r win-x64" />
   </Target>
