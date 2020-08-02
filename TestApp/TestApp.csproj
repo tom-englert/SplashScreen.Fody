@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <WeaverFiles Include="$(SolutionDir)$(SolutionName)\bin\$(Configuration)\net472\$(SolutionName).dll" />
+    <WeaverFiles Include="$(SolutionDir)$(SolutionName)\bin\$(Configuration)\$(WeaverTargetFramework)\$(SolutionName).dll" />
   </ItemGroup>
 
 </Project>
