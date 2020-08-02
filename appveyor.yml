@@ -1,9 +1,14 @@
 image: Visual Studio 2019
+
 configuration: Release
 platform: Any CPU
+
 install:
 - cmd: git submodule update --init --recursive
+- cmd: dotnet --info
+
 build_script:
-- cmd: MSBuild -restore /p:Configuration=Release /verbosity:minimal
+- cmd: MSBuild -restore /p:Configuration=Release /verbosity:normal
+
 artifacts:
 - path: nugets/*.nupkg
