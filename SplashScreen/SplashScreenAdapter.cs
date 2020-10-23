@@ -35,6 +35,9 @@ namespace SplashScreen
 
         internal SplashScreenAdapter(string splashBitmapResourceName, double minimumVisibilityDuration, double fadeoutDuration)
         {
+            if (_splashScreenCloseRequested)
+                return;
+
             _minimumVisibilityDuration = minimumVisibilityDuration;
             _fadeoutDuration = fadeoutDuration;
 
