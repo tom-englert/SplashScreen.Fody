@@ -5,7 +5,7 @@
     /// </summary>
     public partial class App
     {
-        public App()
+        static App()
         {
             // uncomment to omit splash
             // SplashScreen.SplashScreenAdapter.CloseSplashScreen();
