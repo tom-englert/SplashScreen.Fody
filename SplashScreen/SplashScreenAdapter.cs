@@ -59,7 +59,7 @@ namespace SplashScreen
         /// </summary>
         public static void CloseSplashScreen()
         {
-            _adapterInstance?.Close(TimeSpan.Zero);
+            CloseSplashScreen(TimeSpan.Zero);
         }
 
         /// <summary>
@@ -67,6 +67,7 @@ namespace SplashScreen
         /// </summary>
         public static void CloseSplashScreen(TimeSpan fadeoutDuration)
         {
+            _splashScreenCloseRequested = true;
             _adapterInstance?.Close(fadeoutDuration);
         }
 
@@ -93,7 +94,6 @@ namespace SplashScreen
         {
             _physicalInstance?.Close(fadeoutDuration);
             _physicalInstance = null;
-            _splashScreenCloseRequested = true;
             _adapterInstance = null;
         }
 
