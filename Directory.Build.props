@@ -8,6 +8,8 @@
     <Description>Lets you design your WPF splash screen as a WPF Control instead of a static bitmap</Description>
     <WeaverTargetFramework>netstandard2.0</WeaverTargetFramework>
     <WeaverNugetFolder>netstandardweaver</WeaverNugetFolder>
+    <!-- work around https://github.com/dotnet/msbuild/issues/4303 -->
+    <AddSyntheticProjectReferencesForSolutionDependencies>false</AddSyntheticProjectReferencesForSolutionDependencies>
   </PropertyGroup>
 
   <Import Project="Common.props" />
