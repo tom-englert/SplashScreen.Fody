@@ -114,7 +114,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <WeaverFiles Include="$(SolutionDir)$(SolutionName)\bin\$(Configuration)\net472\$(SolutionName).dll" />
+    <WeaverFiles Include="$(SolutionDir)$(SolutionName)\bin\$(Configuration)\netstandard2.0\$(SolutionName).dll" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Logo.png" />

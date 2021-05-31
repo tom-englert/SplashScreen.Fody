@@ -39,7 +39,7 @@ namespace SplashGenerator
             var assemblyNames = referenceCopyLocalPaths
                 .Select(TryGetAssemblyName)
                 .Where(assembly => assembly != null)
-                .ToDictionary(item => item.FullName);
+                .ToDictionaryDistinct(item => item.FullName, StringComparer.OrdinalIgnoreCase);
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, e)
                 => assemblyNames.TryGetValue(e.Name, out var assemblyName) ? Assembly.LoadFile(new Uri(assemblyName.CodeBase).LocalPath) : null;
@@ -134,6 +134,18 @@ namespace SplashGenerator
             {
                 return null;
             }
+        }
+
+        private static Dictionary<TKey, TElement> ToDictionaryDistinct<TKey, TElement>(this IEnumerable<TElement> source, Func<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        {
+            var dictionary = new Dictionary<TKey, TElement>(comparer);
+
+            foreach (var element in source)
+            {
+                dictionary[keySelector(element)] = element;
+            }
+
+            return dictionary;
         }
     }
 }
