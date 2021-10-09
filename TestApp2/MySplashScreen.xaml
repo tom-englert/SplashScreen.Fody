@@ -15,7 +15,7 @@
     </LinearGradientBrush>
   </UserControl.Background>
   <DockPanel Margin="45">
-    <TextBlock Text="YOUR&#10;LOGO" FontSize="48" DockPanel.Dock="Right"/>
+    <TextBlock Text="YOUR&#10;LOGO ™" FontSize="48" DockPanel.Dock="Right" FontFamily="Segoe UI"/>
     <Decorator Width="40" DockPanel.Dock="Right"/>
 
     <StackPanel>
