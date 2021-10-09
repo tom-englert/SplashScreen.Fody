@@ -24,5 +24,7 @@ namespace TestApp2
         /// Gets the file description.
         /// </summary>
         public FileVersionInfo FileVersionInfo { get; } = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
+
+        public string Product { get; } = "MyProduct ™";
     }
 }
