@@ -12,4 +12,4 @@ build_script:
 
 artifacts:
 - path: nugets/*.nupkg
-- path: TestApp2/**/TestApp2.exe
+- path: TestApp2/bin/**/TestApp2.exe
