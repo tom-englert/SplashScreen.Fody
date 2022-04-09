@@ -45,7 +45,7 @@ namespace SplashGenerator
                 => assemblyNames.TryGetValue(e.Name, out var assemblyName) ? Assembly.LoadFile(new Uri(assemblyName.CodeBase).LocalPath) : null;
 
             var targetAssembly = Assembly.LoadFile(assemblyFilePath);
-            var controlType = targetAssembly.GetTypes().FirstOrDefault(type => string.Equals(type.FullName, controlTypeName, StringComparison.OrdinalIgnoreCase));
+            var controlType = GetLoadableTypes(targetAssembly).FirstOrDefault(type => string.Equals(type.FullName, controlTypeName, StringComparison.OrdinalIgnoreCase));
             if (controlType == null)
             {
                 return ErrorMessage($"The project does not contain a type named '{controlTypeName}'. Add a user control named {controlTypeName}.xaml as a template for your splash screen.");
@@ -75,6 +75,20 @@ namespace SplashGenerator
             Dispatcher.Run();
 
             return data ?? ErrorMessage("Unknown Error");
+        }
+
+        [System.Diagnostics.DebuggerNonUserCode]
+        public static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+        {
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                // Return only the types that could successfully be reflected. The splash screen should be among it.
+                return ex.Types.Where(type => type != null);
+            }
         }
 
         private static string GenerateBitmap(UIElement control)
