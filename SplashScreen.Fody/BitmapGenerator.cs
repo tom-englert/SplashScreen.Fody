@@ -29,15 +29,18 @@ namespace SplashScreen.Fody
                 var generatorPath = Path.Combine(generatorFolder, "SplashGenerator.exe");
                 logger.LogInfo($"Bitmap generator: {generatorPath}");
 
-                var arguments = new[] { assemblyFilePath, controlTypeName }.Concat(referenceCopyLocalPaths);
-
                 var startInfo = new ProcessStartInfo(generatorPath)
                 {
                     CreateNoWindow = true,
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     UseShellExecute = false,
-                    Arguments = string.Join(" ", arguments.Select(arg => "\"" + arg + "\""))
+                    Environment =
+                    {
+                        ["AssemblyFile"] = assemblyFilePath,
+                        ["ControlType"] = controlTypeName,
+                        ["ReferenceLocalPaths"] = string.Join("|", referenceCopyLocalPaths)
+                    }
                 };
 
                 var process = Process.Start(startInfo);

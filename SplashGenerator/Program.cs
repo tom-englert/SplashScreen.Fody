@@ -13,11 +13,15 @@ namespace SplashGenerator
     public static class Program
     {
         [STAThread]
-        public static void Main(string[] args)
+        public static void Main()
         {
             try
             {
-                var data = GenerateBase64EncodedBitmap(args[0], args[1], args.Skip(2));
+                var assemblyFilePath = Environment.GetEnvironmentVariable("AssemblyFile");
+                var controlTypeName = Environment.GetEnvironmentVariable("ControlType");
+                var referenceCopyLocalPaths = Environment.GetEnvironmentVariable("ReferenceLocalPaths")?.Split('|');
+
+                var data = GenerateBase64EncodedBitmap(assemblyFilePath, controlTypeName, referenceCopyLocalPaths);
 
                 Console.Write(data ?? ErrorMessage(@"Error generating stream."));
             }
