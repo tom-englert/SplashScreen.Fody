@@ -17,9 +17,7 @@ namespace SplashScreen.Fody
         private const string MinimumVisibilityDurationPropertyName = "MinimumVisibilityDuration";
         private const string FadeoutDurationPropertyName = "FadeoutDuration";
         private const string SplashScreenAdapterTypeName = "SplashScreenAdapter";
-
         private const string SplashResourceName = "splash_a7675be0ade04430a1bd47ee14b34343.png";
-
 
         public override bool ShouldCleanReference => true;
 

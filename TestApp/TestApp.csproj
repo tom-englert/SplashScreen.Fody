@@ -4,7 +4,7 @@
   <PropertyGroup>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net472;netcoreapp3.0</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp3.0;net5.0-windows;net6.0-windows</TargetFrameworks>
   </PropertyGroup>
 
   
@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Fody">
-      <Version>6.2.4</Version>
+      <Version>6.6.4</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
