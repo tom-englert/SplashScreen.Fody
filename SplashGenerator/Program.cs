@@ -61,10 +61,11 @@ namespace SplashGenerator
 
             dispatcher.BeginInvoke(DispatcherPriority.Normal, (Action)(() =>
             {
-                var control = CreateControl(controlType);
+                var control = CreateControl(controlType, out var createControlError);
                 if (control == null)
                 {
-                    data = ErrorMessage($"Type {controlType} is not a UIElement with a default constructor. You need to have a user control named {controlType.Name}.xaml as a template for your splash screen.");
+                    data = ErrorMessage(
+                        $"Type {controlType} is not a UIElement with a default constructor. You need to have a user control named {controlType.Name}.xaml as a template for your splash screen. Details: {createControlError}");
                 }
                 else
                 {
@@ -123,14 +124,16 @@ namespace SplashGenerator
             }
         }
 
-        private static UIElement CreateControl(Type controlType)
+        private static UIElement CreateControl(Type controlType, out string error)
         {
+            error = default;
             try
             {
                 return (UIElement)Activator.CreateInstance(controlType);
             }
-            catch
+            catch (Exception ex)
             {
+                error = ex.ToString();
                 return default;
             }
         }
