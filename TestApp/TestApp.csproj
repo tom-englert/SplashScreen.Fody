@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
@@ -7,7 +7,6 @@
     <TargetFrameworks>net472;net6.0-windows7.0;net7.0-windows7.0</TargetFrameworks>
   </PropertyGroup>
 
-  
   <ItemGroup>
     <!-- Resources -->
     <EmbeddedResource Update="Properties\Resources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="Resources.Designer.cs" />
@@ -20,11 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fody">
-      <Version>6.6.4</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="Fody" Version="6.8.0" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
