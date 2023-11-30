@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net462;net6.0-windows7.0;net7.0-windows7.0</TargetFrameworks>
+    <TargetFrameworks>net462;net6.0-windows7.0;net7.0-windows7.0;net8.0-windows7</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Common.snk</AssemblyOriginatorKeyFile>
     <SkipPackagingDefaultFiles>true</SkipPackagingDefaultFiles>
@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="Fody" Version="6.8.0" PrivateAssets="None" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <Import Project="FodyPackaging.targets" />

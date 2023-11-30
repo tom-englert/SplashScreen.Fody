@@ -19,13 +19,13 @@
 
   <ItemGroup>
     <PackageReference Include="FodyHelpers" Version="6.8.0" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="CopyFilesToOutputDirectory">
-    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net7.0-windows7.0" />
-    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net7.0-windows7.0 -r win-x86" />
-    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net7.0-windows7.0 -r win-x64" />
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net8.0-windows7.0" />
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net8.0-windows7.0 -r win-x86" />
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net8.0-windows7.0 -r win-x64" />
   </Target>
 
 </Project>
