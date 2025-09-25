@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net462;net6.0-windows7.0;net7.0-windows7.0;net8.0-windows7</TargetFrameworks>
+    <TargetFrameworks>net462;net6.0-windows7.0;net7.0-windows7.0;net8.0-windows7;net9.0-windows7</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Common.snk</AssemblyOriginatorKeyFile>
     <SkipPackagingDefaultFiles>true</SkipPackagingDefaultFiles>

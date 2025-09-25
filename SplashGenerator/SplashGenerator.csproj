@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <UseWPF>true</UseWPF>
-    <TargetFrameworks>net472;net8.0-windows7.0</TargetFrameworks>
+    <TargetFrameworks>net472;net9.0-windows7.0</TargetFrameworks>
     <Nullable>disable</Nullable>
     <RuntimeIdentifiers>win-x86;win-x64</RuntimeIdentifiers>
     <PublishProtocol>FileSystem</PublishProtocol>

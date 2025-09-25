@@ -23,9 +23,9 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="CopyFilesToOutputDirectory">
-    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net8.0-windows7.0" />
-    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net8.0-windows7.0 -r win-x86" />
-    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net8.0-windows7.0 -r win-x64" />
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net9.0-windows7.0" />
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net9.0-windows7.0 -r win-x86" />
+    <Exec Command="dotnet publish ..\SplashGenerator\SplashGenerator.csproj -c $(Configuration) -f net9.0-windows7.0 -r win-x64" />
   </Target>
 
 </Project>

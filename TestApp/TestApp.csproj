@@ -4,7 +4,7 @@
   <PropertyGroup>
     <UseWPF>true</UseWPF>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net472;net6.0-windows7.0;net7.0-windows7.0;net8.0-windows7.0</TargetFrameworks>
+    <TargetFrameworks>net472;net6.0-windows7.0;net7.0-windows7.0;net8.0-windows7.0;net9.0-windows7</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
