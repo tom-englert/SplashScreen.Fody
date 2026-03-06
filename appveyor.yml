@@ -4,6 +4,8 @@ configuration: Release
 platform: Any CPU
 
 install:
+- ps: Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile "dotnet-install.ps1"
+- ps: .\dotnet-install.ps1 -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
 - cmd: git submodule update --init --recursive
 - cmd: dotnet --info
 
