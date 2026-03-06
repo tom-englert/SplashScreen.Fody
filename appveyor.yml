@@ -10,8 +10,7 @@ install:
 - cmd: dotnet --info
 
 build_script:
-- cmd: MSBuild -restore /p:Configuration=Release /verbosity:normal
+- cmd: dotnet build -c Release
 
 artifacts:
 - path: nugets/*.nupkg
-- path: TestApp2/bin/**/TestApp2.exe
